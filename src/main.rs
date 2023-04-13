@@ -4,8 +4,8 @@ use wkt::TryFromWkt;
 use wmm::declination;
 
 fn main() {
-    let date = Date::from_calendar_date(2023, Month::February, 9).unwrap();
-    let true_north = 0.0; // assuming that true north is at 0 degrees
+    let date = Date::from_calendar_date(2022, Month::December, 7).unwrap();
+    let true_north = 1.5707963267948966; // assuming that true north is at 0 degrees
 
     let coords = vec![
         "POINT (5.250744062 51.794809988)",
@@ -29,15 +29,15 @@ fn main() {
         let lat = point.y();
 
         let dec = declination(date, lat, lon).unwrap();
-        let orientation = (lon - true_north - dec.to_degrees()).to_degrees() / 360.0;
+        let orientation = (lon - true_north - dec) / 2.0;
 
         println!(
             "Magnetic declination for coordinates {},{} is {:.2}°",
-            lat, lon, dec.to_degrees()
+            lat, lon, dec
         );
         println!(
             "Orientation relative to true north for coordinates {},{} is {:.2} degrees",
-            lat, lon, orientation * 360.0
+            lat, lon, orientation
         );
     }
 }
