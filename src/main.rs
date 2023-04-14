@@ -5,7 +5,7 @@ use wmm::declination;
 
 fn main() {
     let date = Date::from_calendar_date(2022, Month::December, 7).unwrap();
-    let true_north = 1.5707963267948966; // assuming that true north is at 0 degrees
+    let relative_north = 110.0; // the relative north in a given direction
 
     let coords = vec![
         "POINT (5.250744062 51.794809988)",
@@ -29,15 +29,15 @@ fn main() {
         let lat = point.y();
 
         let dec = declination(date, lat, lon).unwrap();
-        let orientation = (lon - true_north - dec) / 2.0;
+        let orientation = (lon - relative_north - dec.to_degrees()).to_degrees() / 360.0;
 
         println!(
             "Magnetic declination for coordinates {},{} is {:.2}°",
             lat, lon, dec
         );
         println!(
-            "Orientation relative to true north for coordinates {},{} is {:.2} degrees",
-            lat, lon, orientation
+            "Orientation relative to true north for coordinates {},{} is {:.2} radians",
+            lat, lon, orientation.to_radians()
         );
     }
 }
